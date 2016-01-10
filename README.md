@@ -63,7 +63,7 @@ value.
 
 ##### Usage
 
-###### `transform(transformFn, [options])`
+##### `transform(transformFn, [options])`
 
 <table>
   <thead>
