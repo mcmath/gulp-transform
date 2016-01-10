@@ -144,9 +144,9 @@ Copyright &copy; 2016 Akim McMath. Licensed under the [MIT License][License link
 [Version badge]: https://img.shields.io/npm/v/gulp-transform.svg?style=flat-square
 [License badge]: https://img.shields.io/npm/l/gulp-transform.svg?style=flat-square
 [License link]: LICENSE.txt
-[Build link]: https://img.shields.io/travis/akim-mcmath/gulp-transform/master.svg?style=flat-square
-[Build badge]: https://travis-ci.org/akim-mcmath/gulp-transform
-[Coverage link]: https://img.shields.io/coveralls/akim-mcmath/gulp-transform/master.svg?style=flat-square&service=github
-[Coverage badge]: https://coveralls.io/github/akim-mcmath/gulp-transform?branch=master
-[Dependencies link]: https://img.shields.io/gemnasium/akim-mcmath/gulp-transform.svg?style=flat-square
-[Dependencies badge]: https://gemnasium.com/akim-mcmath/gulp-transform
+[Build badge]: https://img.shields.io/travis/akim-mcmath/gulp-transform/master.svg?style=flat-square
+[Build link]: https://travis-ci.org/akim-mcmath/gulp-transform
+[Coverage badge]: https://img.shields.io/coveralls/akim-mcmath/gulp-transform/master.svg?style=flat-square&service=github
+[Coverage link]: https://coveralls.io/github/akim-mcmath/gulp-transform?branch=master
+[Dependencies badge]: https://img.shields.io/gemnasium/akim-mcmath/gulp-transform.svg?style=flat-square
+[Dependencies link]: https://gemnasium.com/akim-mcmath/gulp-transform
