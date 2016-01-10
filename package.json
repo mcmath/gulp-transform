@@ -1,0 +1,52 @@
+{
+  "name": "gulp-transform",
+  "version": "0.0.0",
+  "description": "Gulp plugin for performing arbitrary transformations on the contents of files.",
+  "main": "index.js",
+  "files": [
+    "index.js",
+    "LICENSE.txt",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "mocha",
+    "coverage": "istanbul cover _mocha && open ./coverage/lcov-report/index.html",
+    "coveralls": "istanbul cover _mocha && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage"
+  },
+  "engines": {
+    "node": ">=0.10"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/akim-mcmath/gulp-transform.git"
+  },
+  "keywords": [
+    "gulpplugin",
+    "gulp",
+    "transform"
+  ],
+  "author": "Akim McMath <akim.elijah.mcmath@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/akim-mcmath/gulp-transform/issues"
+  },
+  "homepage": "https://github.com/akim-mcmath/gulp-transform#readme",
+  "peerDependencies": {
+    "gulp": "^3.0.0"
+  },
+  "dependencies": {
+    "gulp-util": "^3.0.7",
+    "lodash.isfunction": "^3.0.6",
+    "lodash.isobject": "^3.0.2",
+    "lodash.isstring": "^3.0.1"
+  },
+  "devDependencies": {
+    "chai": "^3.4.1",
+    "coveralls": "^2.11.6",
+    "event-stream": "^3.3.2",
+    "istanbul": "^0.4.1",
+    "mocha": "^2.3.4",
+    "sinon": "^1.17.2",
+    "sinon-chai": "^2.8.0"
+  }
+}
