@@ -29,7 +29,6 @@ function noReturn(contents, file) {
   file.path = 'ataxia';
 }
 
-
 function bufferReturn(contents, file) {
   return new Buffer(file.path + contents);
 }
