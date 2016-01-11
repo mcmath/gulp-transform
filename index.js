@@ -9,10 +9,8 @@ var isString = require('lodash.isstring');
 
 
 
-module.exports = gulpTransform;
-
 // Main plugin function.
-function gulpTransform(transformFn, options) {
+module.exports = function gulpTransform(transformFn, options) {
   if (!transformFn) {
     err('transformFn must be defined.');
   } else if (!isFunction(transformFn)) {
@@ -22,7 +20,7 @@ function gulpTransform(transformFn, options) {
   } else {
     return new PluginStream(transformFn, options);
   }
-}
+};
 
 
 
