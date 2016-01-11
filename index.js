@@ -39,9 +39,7 @@ PluginStream.prototype._transform = function(file, enc, next) {
 
   if (file.isBuffer()) {
     file.contents = transform(fn, file.contents, file, opts);
-  }
-
-  if (file.isStream()) {
+  } else if (file.isStream()) {
     file.contents = file.contents.pipe(new ContentStream(fn, file, opts));
   }
 
