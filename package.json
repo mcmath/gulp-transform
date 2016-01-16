@@ -36,10 +36,7 @@
     "gulp": "^3.0.0"
   },
   "dependencies": {
-    "gulp-util": "^3.0.7",
-    "lodash.isfunction": "^3.0.6",
-    "lodash.isobject": "^3.0.2",
-    "lodash.isstring": "^3.0.1"
+    "gulp-util": "^3.0.7"
   },
   "devDependencies": {
     "chai": "^3.4.1",
