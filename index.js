@@ -3,26 +3,21 @@
 var inherits = require('util').inherits;
 var Transform = require('stream').Transform;
 var PluginError = require('gulp-util').PluginError;
-var isObject = require('lodash.isobject');
-var isFunction = require('lodash.isfunction');
-var isString = require('lodash.isstring');
 
 
-
-module.exports = gulpTransform;
 
 // Main plugin function.
-function gulpTransform(transformFn, options) {
+module.exports = function gulpTransform(transformFn, options) {
   if (!transformFn) {
     err('transformFn must be defined.');
-  } else if (!isFunction(transformFn)) {
-    err('transformFn must be a Function.');
-  } else if (options && !isObject(options)) {
-    err('options must be an Object or undefined.');
+  } else if (typeof transformFn !== 'function') {
+    err('transformFn must be a function.');
+  } else if (options && !/^(?:function|object)$/.test(typeof options)) {
+    err('options must be an object or undefined.');
   } else {
     return new PluginStream(transformFn, options);
   }
-}
+};
 
 
 
@@ -87,10 +82,10 @@ function transform(fn, contents, file, opts) {
   // Ensure transformFn returns a String or a Buffer and return as a Buffer.
   if (Buffer.isBuffer(contents)) {
     return contents;
-  } else if (isString(contents)) {
+  } else if (typeof contents === 'string' || contents instanceof String) {
     return new Buffer(contents);
   } else {
-    err('transformFn must return a String or a Buffer.');
+    err('transformFn must return a string or a buffer.');
   }
 }
 

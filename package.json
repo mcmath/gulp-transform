@@ -1,6 +1,6 @@
 {
   "name": "gulp-transform",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Gulp plugin for performing arbitrary transformations on the contents of files.",
   "main": "index.js",
   "files": [
@@ -10,6 +10,7 @@
   ],
   "scripts": {
     "test": "mocha",
+    "clean": "rm -rf ./node_modules ./coverage",
     "coverage": "istanbul cover _mocha && open ./coverage/lcov-report/index.html",
     "coveralls": "istanbul cover _mocha && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage"
   },
@@ -35,10 +36,7 @@
     "gulp": "^3.0.0"
   },
   "dependencies": {
-    "gulp-util": "^3.0.7",
-    "lodash.isfunction": "^3.0.6",
-    "lodash.isobject": "^3.0.2",
-    "lodash.isstring": "^3.0.1"
+    "gulp-util": "^3.0.7"
   },
   "devDependencies": {
     "chai": "^3.4.1",
