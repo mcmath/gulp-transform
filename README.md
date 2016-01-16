@@ -8,8 +8,8 @@
 
 
 [Gulp][Gulp link] plugin for applying arbitrary transformations to
-file contents. Useful for incorporating non-gulp functions and modules into
-your pipeline. Files may be in streaming mode or buffer mode.
+the contents of files. Useful for incorporating non-gulp functions and modules
+into your pipeline. Files may be in streaming mode or buffer mode.
 
 ## Install
 
@@ -35,12 +35,12 @@ const transform = require('gulp-transform');
 
 // Repeat contents three times and prepend filename.
 function transformFn(contents, file) {
-  return [file.basename, contents, contents, contents].join('\n');
+  return [file.path, contents, contents, contents].join('\n');
 }
 
 gulp.task('silly-task', function() {
   return gulp.src('/path/to/src/**/*.txt')
-    .pipe(transform(transformFn)) // Apply transform
+    .pipe(transform(transformFn)) // Apply transform.
     .pipe(gulp.dest('/path/to/dest'));
 });
 ```
@@ -48,7 +48,7 @@ gulp.task('silly-task', function() {
 Destination file:
 
 ```
-caesar.txt
+/path/to/src/caesar.txt
 I am constant as the northern star...
 I am constant as the northern star...
 I am constant as the northern star...
@@ -108,8 +108,7 @@ value.
     </tr>
     <tr>
       <td>
-        options
-        <sup>(optional)</sup>
+        options<br>(optional)
       </td>
       <td align="center">
         <code>Object</code>
