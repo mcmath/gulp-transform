@@ -61,10 +61,10 @@ I am constant as the northern star.
 
 #### Pairing with non-gulp packages
 
-We can pair gulp-transform with vanilla node packages to reduce dependence on
-gulp-specific plugins. In this example, we use gulp-transform with
-[cheerio][Cheerio link] to add a `role="main"` attribute to our `<main>` tags,
-thus ensuring accessibility in older versions of Internet Explorer.
+We can pair gulp-transform with vanilla node packages to reduce our dependence
+on gulp-specific plugins. In this example, we use gulp-transform with
+[cheerio][Cheerio link] to add a `role="main"` attribute to all `<main>`
+elements, thus ensuring accessibility in older versions of Internet Explorer.
 
 ```js
 const gulp = require('gulp');
