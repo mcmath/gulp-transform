@@ -8,12 +8,12 @@ var PluginError = require('gulp-util').PluginError;
 
 // Main plugin function.
 module.exports = function gulpTransform(transformFn, options) {
-  if (!transformFn) {
-    err('transformFn must be defined.');
-  } else if (typeof transformFn !== 'function') {
-    err('transformFn must be a function.');
-  } else if (options && !/^(?:function|object)$/.test(typeof options)) {
-    err('options must be an object or undefined.');
+  if (isNone(transformFn)) {
+    throwPluginError('transformFn must be defined.');
+  } else if (!isFunction(transformFn)) {
+    throwPluginError('transformFn must be a function.');
+  } else if (!isNone(options) && !isObject(options)) {
+    throwPluginError('options must be an object if defined.');
   } else {
     return new PluginStream(transformFn, options);
   }
@@ -82,16 +82,34 @@ function transform(fn, contents, file, opts) {
   // Ensure transformFn returns a String or a Buffer and return as a Buffer.
   if (Buffer.isBuffer(contents)) {
     return contents;
-  } else if (typeof contents === 'string' || contents instanceof String) {
+  } else if (isString(contents)) {
     return new Buffer(contents);
   } else {
-    err('transformFn must return a string or a buffer.');
+    throwPluginError('transformFn must return a string or a buffer.');
   }
 }
 
 
 
-// Throws Gulp PluginError with message.
-function err(message) {
+function throwPluginError(message) {
   throw new PluginError('gulp-transform', message);
+}
+
+
+
+function isNone(value) {
+  return value === undefined || value === null;
+}
+
+function isFunction(value) {
+  return typeof value === 'function';
+}
+
+function isObject(value) {
+  var type = typeof value;
+  return type === 'object' || type === 'function';
+}
+
+function isString(value) {
+  return typeof value === 'string' || value instanceof String;
 }
