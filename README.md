@@ -8,8 +8,14 @@
 
 
 [Gulp][Gulp link] plugin for applying arbitrary transformations to
-the contents of files. Useful for incorporating non-gulp functions and modules
-into your pipeline. Files may be in streaming mode or buffer mode.
+the contents of files.
+
+* **Simple**. Just pass a callback function that takes the current file
+contents and returns the desired contents.
+* **Flexible**. Receive file contents as a Buffer or a string. Compatible with
+pipelines in both buffer mode and streaming mode.
+* **Economical**. Reduce the need for gulp-specific plugins by pairing
+gulp-transform with ordinary node packages and functions.
 
 ## Install
 
@@ -19,12 +25,14 @@ Install via [npm][NPM link]:
 npm install --save-dev gulp-transform
 ```
 
-## Example
+## Examples
 
-Source file (caesar.txt):
+#### Simple transformation
+
+Source file:
 
 ```
-I am constant as the northern star...
+I am constant as the northern star.
 ```
 
 Transform task:
@@ -33,106 +41,85 @@ Transform task:
 const gulp = require('gulp');
 const transform = require('gulp-transform');
 
-// Repeat contents three times and prepend filename.
-function transformFn(contents, file) {
-  return [file.path, contents, contents, contents].join('\n');
-}
-
-gulp.task('silly-task', function() {
-  return gulp.src('/path/to/src/**/*.txt')
-    .pipe(transform(transformFn)) // Apply transform.
-    .pipe(gulp.dest('/path/to/dest'));
+gulp.task('quadruple', function() {
+  return gulp.src('src/*.txt')
+    .pipe(transform(function(contents) {
+      return Array(4).fill(contents).join('\n');
+    }))
+    .pipe(gulp.dest('dest'));
 });
 ```
 
 Destination file:
 
 ```
-/path/to/src/caesar.txt
-I am constant as the northern star...
-I am constant as the northern star...
-I am constant as the northern star...
+I am constant as the northern star.
+I am constant as the northern star.
+I am constant as the northern star.
+I am constant as the northern star.
+```
+
+#### Pairing with non-gulp packages
+
+We can pair gulp-transform with vanilla node packages to reduce dependence on
+gulp-specific plugins. In this example, we use gulp-transform with
+[cheerio][Cheerio link] to add a `role="main"` attribute to our `<main>` tags,
+thus ensuring accessibility in older versions of Internet Explorer.
+
+```js
+const gulp = require('gulp');
+const transform = require('gulp-transform');
+const cheerio = require('cheerio');
+
+
+function transformFn(contents) {
+  var $ = cheerio.load(contents);
+  $('main').attr('role', 'main');
+  return $.html();
+}
+
+gulp.task('cheerio', function() {
+  return gulp.src('src/**/*.html')
+    .pipe(transform(transformFn, {encoding: 'utf8'}))
+    .pipe(gulp.dest('dest'));
+});
 ```
 
 ## API
 
-The package exports a single plugin function that takes a callback and an
-optional options object. The callback is invoked once per file. The
-contents of the file are passed to the callback and replaced by the return
-value.
+#### `transform(transformFn, [options])`
 
-##### Usage
+##### transformFn `function`
 
-##### `transform(transformFn, [options])`
+The callback responsible for the transformation. The return value must be a
+string or a Buffer, which will replace the file's contents. The callback
+is invoked once per file with the following arguments:
 
-<table>
-  <thead>
-    <tr>
-      <th>
-        Param
-      </th>
-      <th align="center">
-        Type
-      </th>
-      <th>
-        Details
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        transformFn
-      </td>
-      <td align="center">
-        <code>Function</code>
-      </td>
-      <td>
-        Function that transforms the contents of each file. Invoked with the
-        following arguments:
-        <ul>
-          <li>
-            <strong>contents</strong> (<code>Buffer</code>|<code>String</code>) The contents of
-            the file. Will be a Buffer unless otherwise specified.
-          </li>
-          <li>
-            <strong>file</strong> (<code>File</code>)
-            The <a href="https://github.com/gulpjs/vinyl">vinyl file</a> object
-            whose contents are to be transformed. Useful for getting metadata
-            about the file, such as its name or path.
-          </li>
-        </ul>
-        The return value will replace the file's contents and must be either
-        a String or a Buffer.
-      </td>
-    </tr>
-    <tr>
-      <td>
-        options<br>(optional)
-      </td>
-      <td align="center">
-        <code>Object</code>
-      </td>
-      <td>
-        Options to modify the behavior of the plugin.
-        <ul>
-          <li>
-            <strong>encoding</strong> (<code>String</code>) Casts contents to
-            a string with the specified
-            <a href="https://nodejs.org/docs/latest/api/buffer.html#buffer_buffers_and_character_encodings">encoding</a>
-            before it is passed to transformFn. If no encoding is specified,
-            contents will be passed as a Buffer.
-          </li>
-          <li>
-            <strong>thisArg</strong> (<code>&#42;</code>) Determines the value of
-            <code>this</code> within transformFn. Defaults to
-            <code>undefined</code>.
-          </li>
-        </ul>
-      </td>
-    </tr>
-  </tbody>
-</table>
+* **contents** `Buffer` | `string` <br>
+The initial contents of the file. Contents are passed as a Buffer unless the
+`encoding` option is set, in which case they are passed as a string.
+Contents are normalized to ensure a consistent API regardless of whether
+files are in streaming or buffer mode.
+
+* **file** `File` <br>
+The [Vinyl file][Vinyl link] object to which the contents belong. Useful for
+getting metadata about the file, such as its path. Making changes to
+`file.contents` is not recommended, however, as these contents are not
+normalized and will in any case be replaced by the return value of the callback.
+
+##### options `object` (optional)
+
+An object for configuring the behavior of the plugin. The following keys are
+accepted as options:
+
+* **encoding** `string` <br>
+Casts contents to a string with the specified
+[encoding][Encoding link] before it is passed to transformFn. If no encoding is
+specified, contents will be passed as a Buffer.
+
+* **thisArg** `*` <br>
+Determines the value of `this` within transformFn. If omitted,
+`this` will be undefined.
 
 ## License
 
@@ -149,3 +136,6 @@ Copyright &copy; 2016 Akim McMath. Licensed under the [MIT License][License link
 [Coverage link]: https://coveralls.io/github/akim-mcmath/gulp-transform?branch=master
 [Dependencies badge]: https://img.shields.io/gemnasium/akim-mcmath/gulp-transform.svg?style=flat-square
 [Dependencies link]: https://gemnasium.com/akim-mcmath/gulp-transform
+[Cheerio link]: https://www.npmjs.com/package/cheerio
+[Vinyl link]: https://github.com/gulpjs/vinyl
+[Encoding link]: https://nodejs.org/docs/latest/api/buffer.html#buffer_buffers_and_character_encodings
