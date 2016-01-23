@@ -4,7 +4,7 @@ var expect = require('chai').use(require('sinon-chai')).expect;
 var sinon = require('sinon');
 var es = require('event-stream');
 var gutil = require('gulp-util');
-var fixt = require('./fixtures');
+var fixt = require('./fixtures/fixtures');
 
 
 
