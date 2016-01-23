@@ -1,6 +1,6 @@
 {
   "name": "gulp-transform",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Gulp plugin for performing arbitrary transformations on the contents of files.",
   "main": "index.js",
   "files": [
