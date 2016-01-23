@@ -24,7 +24,10 @@
   "keywords": [
     "gulpplugin",
     "gulp",
-    "transform"
+    "transform",
+    "replace",
+    "wrapper",
+    "wrap"
   ],
   "author": "Akim McMath <akim.elijah.mcmath@gmail.com>",
   "license": "MIT",
