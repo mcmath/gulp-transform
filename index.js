@@ -6,40 +6,35 @@ var PluginError = require('gulp-util').PluginError;
 
 
 
-// Main plugin function.
-module.exports = function gulpTransform(transformFn, options) {
+function gulpTransform(transformFn, options) {
   if (isNone(transformFn)) {
-    throwPluginError('transformFn must be defined.');
+    throwPluginError('transformFn must be defined');
   } else if (!isFunction(transformFn)) {
-    throwPluginError('transformFn must be a function.');
+    throwPluginError('transformFn must be a function');
   } else if (!isNone(options) && !isObject(options)) {
-    throwPluginError('options must be an object if defined.');
+    throwPluginError('options must be an object if defined');
   } else {
-    return new PluginStream(transformFn, options);
+    return new GulpTransformStream(transformFn, options);
   }
-};
-
-
-
-// Stream returned by main plugin function.
-function PluginStream(fn, opts) {
-  Transform.call(this, {objectMode: true});
-  this.fn = fn;
-  this.opts = opts || {};
 }
 
-inherits(PluginStream, Transform);
 
-// Transforms the contents of each file and emits the file.
-PluginStream.prototype._transform = function(file, enc, next) {
-  var fn = this.fn, opts = this.opts;
 
+function GulpTransformStream(transformFn, options) {
+  Transform.call(this, {objectMode: true});
+  this.transformFn = transformFn;
+  this.options = options || {};
+}
+
+inherits(GulpTransformStream, Transform);
+
+GulpTransformStream.prototype._transform = function(file, encoding, next) {
   if (file.isBuffer()) {
-    file.contents = transform(fn, file.contents, file, opts);
+    file.contents = transformContents(this.transformFn, file.contents, file, this.options);
   }
 
   if (file.isStream()) {
-    file.contents = file.contents.pipe(new ContentStream(fn, file, opts));
+    file.contents = file.contents.pipe(new FileStream(this.transformFn, file, this.options));
   }
 
   next(null, file);
@@ -47,45 +42,39 @@ PluginStream.prototype._transform = function(file, enc, next) {
 
 
 
-// Stream that transforms file contents if file is in streaming mode.
-function ContentStream(fn, file, opts) {
+function FileStream(transformFn, file, options) {
   Transform.call(this);
-  this.fn = fn;
+  this.transformFn = transformFn;
   this.file = file;
-  this.opts = opts;
+  this.options = options;
   this.data = [];
 }
 
-inherits(ContentStream, Transform);
+inherits(FileStream, Transform);
 
-// Pushes each chunck into a data array.
-ContentStream.prototype._transform = function(chunk, enc, next) {
+FileStream.prototype._transform = function(chunk, encoding, next) {
   this.data.push(chunk);
   next();
 };
 
-// Transforms and emits concatinated data.
-ContentStream.prototype._flush = function(done) {
+FileStream.prototype._flush = function(done) {
   var contents = Buffer.concat(this.data);
-  this.push(transform(this.fn, contents, this.file, this.opts));
+  this.push(transformContents(this.transformFn, contents, this.file, this.options));
   done();
 };
 
 
 
-// Invokes transformFn.
-function transform(fn, contents, file, opts) {
-  // Cast contents to string if encoding is defined in opts.
-  contents = opts.encoding ? contents.toString(opts.encoding) : contents;
-  contents = fn.call(opts.thisArg, contents, file);
+function transformContents(transformFn, contents, file, options) {
+  contents = options.encoding ? contents.toString(options.encoding) : contents;
+  contents = transformFn.call(options.thisArg, contents, file);
 
-  // Ensure transformFn returns a String or a Buffer and return as a Buffer.
   if (Buffer.isBuffer(contents)) {
     return contents;
   } else if (isString(contents)) {
     return new Buffer(contents);
   } else {
-    throwPluginError('transformFn must return a string or a buffer.');
+    throwPluginError('transformFn must return a string or a Buffer');
   }
 }
 
@@ -94,8 +83,6 @@ function transform(fn, contents, file, opts) {
 function throwPluginError(message) {
   throw new PluginError('gulp-transform', message);
 }
-
-
 
 function isNone(value) {
   return value === undefined || value === null;
@@ -113,3 +100,7 @@ function isObject(value) {
 function isString(value) {
   return typeof value === 'string' || value instanceof String;
 }
+
+
+
+module.exports = gulpTransform;
