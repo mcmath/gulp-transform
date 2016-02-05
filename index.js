@@ -9,9 +9,9 @@ var PluginError = require('gulp-util').PluginError;
 function gulpTransform(transformFn, options) {
   if (isNone(transformFn)) {
     throwPluginError('transformFn must be defined');
-  } else if (!isFunction(transformFn)) {
+  } else if (typeof transformFn !== 'function') {
     throwPluginError('transformFn must be a function');
-  } else if (!isNone(options) && !isObject(options)) {
+  } else if (!isNone(options) && !/^(function|object)$/.test(typeof options)) {
     throwPluginError('options must be an object if defined');
   } else {
     return new GulpTransformStream(transformFn, options);
@@ -71,7 +71,7 @@ function transformContents(transformFn, contents, file, options) {
 
   if (Buffer.isBuffer(contents)) {
     return contents;
-  } else if (isString(contents)) {
+  } else if (typeof contents === 'string' || contents instanceof String) {
     return new Buffer(contents);
   } else {
     throwPluginError('transformFn must return a string or a Buffer');
@@ -86,19 +86,6 @@ function throwPluginError(message) {
 
 function isNone(value) {
   return value === undefined || value === null;
-}
-
-function isFunction(value) {
-  return typeof value === 'function';
-}
-
-function isObject(value) {
-  var type = typeof value;
-  return type === 'object' || type === 'function';
-}
-
-function isString(value) {
-  return typeof value === 'string' || value instanceof String;
 }
 
 
