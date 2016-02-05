@@ -6,7 +6,7 @@ var exec = require('child_process').exec;
 var expect = require('chai').use(require('sinon-chai')).expect;
 var gulp = require('gulp');
 var rimraf = require('rimraf');
-var paths = require('./fixtures/paths');
+var paths = require('./config/paths');
 
 
 

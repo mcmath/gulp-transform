@@ -2,7 +2,7 @@
 
 var resolve = require('path').resolve;
 var gulp = require('gulp');
-var paths = require('../paths');
+var paths = require('../../config/paths');
 var transform = require('../../..');
 
 
