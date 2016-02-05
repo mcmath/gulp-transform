@@ -43,9 +43,7 @@ const transform = require('gulp-transform');
 
 gulp.task('quadruple', function() {
   return gulp.src('src/*.txt')
-    .pipe(transform(function(contents) {
-      return Array(4).fill(contents).join('\n');
-    }))
+    .pipe(transform(contents => Array(4).fill(contents).join('\n')))
     .pipe(gulp.dest('dest'));
 });
 ```
