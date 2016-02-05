@@ -3,7 +3,7 @@
 var resolve = require('path').resolve;
 var gulp = require('gulp');
 var cheerio = require('cheerio');
-var paths = require('../paths');
+var paths = require('../../config/paths');
 var transform = require('../../..');
 
 
