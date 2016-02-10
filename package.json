@@ -46,11 +46,11 @@
     "cheerio": "^0.20.0",
     "coveralls": "^2.11.6",
     "event-stream": "^3.3.2",
-    "gulp": "^3.9.0",
+    "gulp": "^3.9.1",
     "istanbul": "^0.4.2",
     "mocha": "^2.4.5",
     "rimraf": "^2.5.1",
-    "sinon": "^1.17.2",
+    "sinon": "^1.17.3",
     "sinon-chai": "^2.8.0"
   }
 }
