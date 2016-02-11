@@ -30,11 +30,13 @@ inherits(GulpTransformStream, Transform);
 
 GulpTransformStream.prototype._transform = function(file, encoding, next) {
   if (file.isBuffer()) {
-    file.contents = transformContents(this.transformFn, file.contents, file, this.options);
+    file.contents = transformContents(
+      this.transformFn, file.contents, file, this.options);
   }
 
   if (file.isStream()) {
-    file.contents = file.contents.pipe(new FileStream(this.transformFn, file, this.options));
+    file.contents = file.contents.pipe(
+      new FileStream(this.transformFn, file, this.options));
   }
 
   next(null, file);
@@ -59,7 +61,8 @@ FileStream.prototype._transform = function(chunk, encoding, next) {
 
 FileStream.prototype._flush = function(done) {
   var contents = Buffer.concat(this.data);
-  this.push(transformContents(this.transformFn, contents, this.file, this.options));
+  this.push(transformContents(
+    this.transformFn, contents, this.file, this.options));
   done();
 };
 
