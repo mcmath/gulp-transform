@@ -26,7 +26,7 @@ describe('plugin:gulpTransform()', function() {
 
   describe('param:transformFn', function() {
 
-    var fn, file;
+    var fn; var file;
     beforeEach(function() {
       file = fixt.file.buffered();
       fn = fixt.fn.transform();
@@ -41,7 +41,7 @@ describe('plugin:gulpTransform()', function() {
       expect(transform.bind(null, 'paralysis')).to.throw(gutil.PluginError);
     });
 
-    it('throws PluginError if return value is not a String or Buffer', function() {
+    it('throws PluginError if return value is not a ctring/Buffer', function() {
       expect(function() {
         transform(fixt.fn.bufferReturn()).write(fixt.file.buffered());
       }).not.to.throw(gutil.PluginError);
@@ -65,7 +65,7 @@ describe('plugin:gulpTransform()', function() {
 
   describe('param:options', function() {
 
-    var fn, file;
+    var fn; var file;
     beforeEach(function() {
       file = fixt.file.buffered();
       fn = fixt.fn.transform();
