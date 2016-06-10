@@ -127,7 +127,7 @@ Copyright &copy; 2016 Akim McMath. Licensed under the [MIT License][License link
 [NPM link]: https://npmjs.org/package/gulp-transform
 [Version badge]: https://img.shields.io/npm/v/gulp-transform.svg?style=flat-square
 [License badge]: https://img.shields.io/npm/l/gulp-transform.svg?style=flat-square
-[License link]: LICENSE.txt
+[License link]: LICENSE
 [Build badge]: https://img.shields.io/travis/akim-mcmath/gulp-transform/master.svg?style=flat-square
 [Build link]: https://travis-ci.org/akim-mcmath/gulp-transform
 [Coverage badge]: https://img.shields.io/coveralls/akim-mcmath/gulp-transform/master.svg?style=flat-square&service=github
