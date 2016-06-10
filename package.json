@@ -1,22 +1,17 @@
 {
   "name": "gulp-transform",
-  "version": "1.0.6",
-  "description": "Gulp plugin for performing arbitrary transformations on the contents of files.",
-  "main": "index.js",
-  "files": [
-    "index.js",
-    "LICENSE.txt",
-    "README.md"
-  ],
+  "version": "1.0.7",
+  "description": "Perform arbitrary transformations on files",
+  "main": "lib/index.js",
   "scripts": {
-    "test": "npm run jshint && npm run jscs && npm run mocha",
-    "jshint": "jshint . --exclude-path .gitignore",
-    "jscs": "jscs .",
-    "mocha": "istanbul cover _mocha",
+    "build": "npm run unbuild && babel src -d lib",
+    "unbuild": "rimraf lib",
+    "test:lint": "eslint src",
+    "test:unit": "istanbul cover _mocha",
+    "test:report": "npm run test:unit && open coverage/lcov-report/index.html",
+    "test": "npm run test:lint && npm run test:unit",
     "coverage": "npm test && open ./coverage/lcov-report/index.html",
-    "clean": "rm -rf ./node_modules ./coverage",
-    "coveralls": "cat ./coverage/lcov.info | coveralls",
-    "preversion": "npm run test"
+    "coveralls": "cat coverage/lcov.info | coveralls"
   },
   "engines": {
     "node": ">=0.10"
@@ -40,23 +35,26 @@
   },
   "homepage": "https://github.com/akim-mcmath/gulp-transform#readme",
   "peerDependencies": {
-    "gulp": "^3.0.0"
+    "gulp": "3.x"
   },
   "dependencies": {
-    "gulp-util": "^3.0.7"
+    "gulp-util": "^3.0.7",
+    "lodash": "^4.13.1"
   },
   "devDependencies": {
+    "babel-cli": "^6.9.0",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-register": "^6.9.0",
     "chai": "^3.5.0",
-    "cheerio": "^0.20.0",
-    "coveralls": "^2.11.6",
+    "coffee-script": "^1.10.0",
+    "coveralls": "^2.11.9",
+    "eslint": "^2.11.1",
     "event-stream": "^3.3.2",
-    "gulp": "^3.9.1",
-    "istanbul": "^0.4.2",
-    "jscs": "^2.9.0",
-    "jshint": "^2.9.1",
-    "mocha": "^2.4.5",
-    "rimraf": "^2.5.1",
-    "sinon": "^1.17.3",
+    "istanbul": "1.0.0-alpha.2",
+    "mocha": "^2.5.3",
+    "rimraf": "^2.5.2",
+    "sinon": "^1.17.4",
     "sinon-chai": "^2.8.0"
   }
 }
