@@ -16,7 +16,7 @@ contents and returns the desired contents.
 pipelines in both buffer mode and streaming mode.
 * **Economical**. Reduce the need for gulp-specific plugins by pairing
 gulp-transform with ordinary node packages and functions.
-
+* **Async**-ready. Transform is supported by returning `Promise` from transform function.
 ## Install
 
 Install via [npm][NPM link]:
@@ -89,9 +89,9 @@ gulp.task('cheerio', function() {
 
 ##### transformFn `function`
 
-The callback responsible for the transformation. The return value must be a
-string or a Buffer, which will replace the file's contents. The callback
-is invoked once per file with the following arguments:
+The callback responsible for the transformation. The return value must be value or
+Promise resolvable to string or a Buffer, which will replace the file's contents.
+The callbackis invoked once per file with the following arguments:
 
 * **contents** `Buffer` | `string` <br>
 The initial contents of the file. Contents are passed as a Buffer unless the

@@ -15,14 +15,17 @@ export class PluginStream extends Transform {
     let {fn, opts} = this;
 
     if (file.isBuffer()) {
-      file.contents = transform(fn, file.contents, file, opts);
-    }
-
-    if (file.isStream()) {
+      transform(fn, file.contents, file, opts)
+        .then(function(contents) {
+          file.contents = contents;
+          next(null, file)
+        })
+        .catch(function(error) {
+          next(error);
+        })
+    } else if (file.isStream()) {
       file.contents = file.contents.pipe(new FileStream(fn, file, opts));
+      next(null, file);
     }
-
-    next(null, file);
   }
-
 }

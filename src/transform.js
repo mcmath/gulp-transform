@@ -3,9 +3,10 @@ import {err} from './err';
 
 export function transform(fn, contents, file, opts) {
   let encoded = opts.encoding ? contents.toString(opts.encoding) : contents;
-  let transformed = fn.call(opts.thisArg, encoded, file);
-
-  return isBuffer(transformed) ? transformed :
-    isString(transformed) ? new Buffer(transformed) :
-    err('transformFn must return a string or a Buffer');
+  return Promise.resolve(fn.call(opts.thisArg, encoded, file))
+    .then(function(transformed) {
+      return isBuffer(transformed) ? transformed :
+        isString(transformed) ? new Buffer(transformed) :
+        err('transformFn must return a string or a Buffer');
+    })
 }
