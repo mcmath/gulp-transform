@@ -32,8 +32,13 @@ describe 'plugin: gulp-transform', ->
 
     context 'returns neither a string nor a Buffer', ->
 
-      it 'throws PluginError', ->
-        err -> transform((content) -> 42).write buffered()
+      it 'throws PluginError', (done) ->
+          t = transform((content) -> 42)
+          t.on 'error', (err) ->
+            done()
+          t.on 'data', () ->
+            done new Error('expected PluginError')
+          t.write buffered()
 
     context 'returns a Buffer or string', ->
       [fn, file] = [null, null]
