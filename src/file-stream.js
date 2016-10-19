@@ -19,9 +19,13 @@ export class FileStream extends Transform {
 
   _flush(done) {
     let contents = Buffer.concat(this.data);
-    this.push(transform(this.fn, contents, this.file, this.opts));
 
-    done();
+    transform(this.fn, contents, this.file, this.opts).then((result) => {
+      this.push(result);
+      done();
+    }).catch((err) => {
+      done(err);
+    });
   }
 
 }

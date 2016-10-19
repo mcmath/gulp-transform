@@ -1,11 +1,11 @@
 chai = require 'chai'
 sinonChai = require 'sinon-chai'
 {match: {any, instanceOf}} = require 'sinon'
-{File: {isVinyl}} = require 'gulp-util'
+{File: {isVinyl}, PluginError} = require 'gulp-util'
 {wait} = require 'event-stream'
 {buffer, string} = require './fixtures/content'
 {buffered, streaming} = require './fixtures/file'
-{bufferFn, stringFn} = require './fixtures/fn'
+{bufferFn, stringFn, asyncFn} = require './fixtures/fn'
 err = require './helpers/err'
 transform = require '../src'
 
@@ -30,10 +30,14 @@ describe 'plugin: gulp-transform', ->
       it 'throws PluginError', ->
         err -> transform 42
 
-    context 'returns neither a string nor a Buffer', ->
+    context 'returns null or undefined', ->
 
-      it 'throws PluginError', ->
-        err -> transform((content) -> 42).write buffered()
+      it 'emits PluginError', (done) ->
+        stream = transform((content) -> null)
+        stream.write buffered()
+        stream.on 'error', (err) ->
+          err.should.be.instanceOf PluginError
+          done()
 
     context 'returns a Buffer or string', ->
       [fn, file] = [null, null]
@@ -48,6 +52,23 @@ describe 'plugin: gulp-transform', ->
 
       it 'is called with contents as first argument', ->
         fn.should.have.been.calledWith instanceOf(Buffer)
+
+      it 'is called with vinyl File as second argument', ->
+        fn.should.have.been.calledWith any, file
+
+    context 'returns a Promise that resolves to a string or Buffer', ->
+      [fn, file] = [null, null]
+
+      beforeEach ->
+        file = buffered()
+        fn = asyncFn()
+        transform(fn, {encoding: 'utf8'}).write(file)
+
+      it 'is called once per file', ->
+        fn.should.have.been.calledOnce
+
+      it 'is called with contents as first argument', ->
+        fn.should.have.been.calledWith string
 
       it 'is called with vinyl File as second argument', ->
         fn.should.have.been.calledWith any, file
@@ -80,40 +101,83 @@ describe 'plugin: gulp-transform', ->
         fn.should.have.been.calledOn undefined
 
     describe 'mode: buffer', ->
-      file = null
 
-      beforeEach (done) ->
-        transform(bufferFn()).once('data', (_file) ->
-          file = _file
-          done()
-        ).write buffered()
+      context 'synchronous', ->
+        file = null
 
-      it 'returns a stream of vinyl Files', ->
-        isVinyl(file).should.be.true
+        beforeEach (done) ->
+          transform(bufferFn()).once('data', (_file) ->
+            file = _file
+            done()
+          ).write buffered()
 
-      it 'files are in buffer mode', ->
-        file.isBuffer().should.be.true;
+        it 'returns a stream of vinyl Files', ->
+          isVinyl(file).should.be.true
 
-      it 'transforms file contents', ->
-        file.contents.should.deep.equal Buffer.concat([buffer, buffer])
+        it 'files are in buffer mode', ->
+          file.isBuffer().should.be.true;
+
+        it 'transforms file contents', ->
+          file.contents.should.deep.equal Buffer.concat([buffer, buffer])
+
+      context 'async', ->
+        file = null
+
+        beforeEach (done) ->
+          transform(asyncFn(), {encoding: 'utf8'}).once('data', (_file) ->
+            file = _file
+            done()
+          ).write buffered()
+
+        it 'returns a stream of vinyl Files', ->
+          isVinyl(file).should.be.true
+
+        it 'files are in buffer mode', ->
+          file.isBuffer().should.be.true;
+
+        it 'transforms file contents', ->
+          file.contents.should.deep.equal new Buffer('un deux trois')
 
     describe 'mode: streaming', ->
-      file = null
 
-      beforeEach (done) ->
-        transform(stringFn(), {encoding: 'utf8'}).once('data', (_file) ->
-          file = _file
-          done()
-        ).write streaming()
+      context 'synchronous', ->
+        file = null
 
-      it 'returns a stream of vinyl Files', ->
-        isVinyl(file).should.be.true
+        beforeEach (done) ->
+          transform(stringFn(), {encoding: 'utf8'}).once('data', (_file) ->
+            file = _file
+            done()
+          ).write streaming()
 
-      it 'files are in streaming mode', ->
-        file.isStream().should.be.true
+        it 'returns a stream of vinyl Files', ->
+          isVinyl(file).should.be.true
 
-      it 'transforms file contents', (done) ->
-        file.pipe(wait((err, data) ->
-          data.should.deep.equal new Buffer('un deux trois')
-          done()
-        ))
+        it 'files are in streaming mode', ->
+          file.isStream().should.be.true
+
+        it 'transforms file contents', (done) ->
+          file.pipe(wait((err, data) ->
+            data.should.deep.equal new Buffer('un deux trois')
+            done()
+          ))
+
+      context 'async', ->
+        file = null
+
+        beforeEach (done) ->
+          transform(asyncFn(), {encoding: 'utf8'}).once('data', (_file) ->
+            file = _file
+            done()
+          ).write streaming()
+
+        it 'returns a stream of vinyl Files', ->
+          isVinyl(file).should.be.true
+
+        it 'files are in streaming mode', ->
+          file.isStream().should.be.true
+
+        it 'transforms file contents', (done) ->
+          file.pipe(wait((err, data) ->
+            data.should.deep.equal new Buffer('un deux trois')
+            done()
+          ))

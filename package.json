@@ -38,6 +38,7 @@
     "gulp": "3.x"
   },
   "dependencies": {
+    "es6-promise": "^4.0.5",
     "gulp-util": "^3.0.7",
     "lodash": "^4.13.1"
   },
@@ -49,10 +50,10 @@
     "chai": "^3.5.0",
     "coffee-script": "^1.10.0",
     "coveralls": "^2.11.9",
-    "eslint": "^2.11.1",
+    "eslint": "^2.13.1",
     "event-stream": "^3.3.2",
-    "istanbul": "1.0.0-alpha.2",
-    "mocha": "^2.5.3",
+    "istanbul": "1.1.0-alpha.1",
+    "mocha": "^3.1.2",
     "rimraf": "^2.5.2",
     "sinon": "^1.17.4",
     "sinon-chai": "^2.8.0"
