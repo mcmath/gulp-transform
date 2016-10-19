@@ -1,5 +1,6 @@
 /coverage/
 /src/
+/test/
 /.babelrc
 /.editorconfig
 /.eslintrc.yml

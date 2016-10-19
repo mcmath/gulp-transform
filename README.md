@@ -10,13 +10,6 @@
 [Gulp][Gulp link] plugin for applying arbitrary transformations to
 the contents of files.
 
-* **Simple**. Just pass a callback function that takes the current file
-contents and returns the desired contents.
-* **Flexible**. Receive file contents as a Buffer or a string. Compatible with
-pipelines in both buffer mode and streaming mode.
-* **Economical**. Reduce the need for gulp-specific plugins by pairing
-gulp-transform with ordinary node packages and functions.
-* **Async**-ready. Transform is supported by returning `Promise` from transform function.
 ## Install
 
 Install via [npm][NPM link]:
@@ -89,9 +82,10 @@ gulp.task('cheerio', function() {
 
 ##### transformFn `function`
 
-The callback responsible for the transformation. The return value must be value or
-Promise resolvable to string or a Buffer, which will replace the file's contents.
-The callbackis invoked once per file with the following arguments:
+The callback responsible for the transformation, whose return value will replace
+the file's contents. The return value may be a string, a Buffer, or a Promise
+resolvable to a string or Buffer. The callback is invoked once per file with the
+following arguments:
 
 * **contents** `Buffer` | `string` <br>
 The initial contents of the file. Contents are passed as a Buffer unless the
