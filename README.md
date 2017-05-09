@@ -115,7 +115,7 @@ Determines the value of `this` within transformFn. If omitted,
 
 ## License
 
-Copyright &copy; 2016 Akim McMath. Licensed under the [MIT License][License link].
+Copyright &copy; 2016&ndash;2017 Akim McMath. Licensed under the [MIT License][License link].
 
 [Gulp link]: http://gulpjs.com/
 [NPM link]: https://npmjs.org/package/gulp-transform
