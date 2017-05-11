@@ -1,4 +1,3 @@
-{Promise} = require 'es6-promise';
 {spy} = require 'sinon'
 
 re = /one|two|three/g
