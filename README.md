@@ -1,11 +1,9 @@
 # gulp-transform
 
 [![Version][Version badge]][NPM link]
-[![License][License badge]][License link]
 [![Build][Build badge]][Build link]
 [![Coverage][Coverage badge]][Coverage link]
 [![Dependencies][Dependencies badge]][Dependencies link]
-
 
 [Gulp][Gulp link] plugin for applying arbitrary transformations to
 the contents of files.
@@ -120,14 +118,13 @@ Copyright &copy; 2016&ndash;2017 Akim McMath. Licensed under the [MIT License][L
 [Gulp link]: http://gulpjs.com/
 [NPM link]: https://npmjs.org/package/gulp-transform
 [Version badge]: https://img.shields.io/npm/v/gulp-transform.svg?style=flat-square
-[License badge]: https://img.shields.io/npm/l/gulp-transform.svg?style=flat-square
 [License link]: LICENSE
-[Build badge]: https://img.shields.io/travis/akim-mcmath/gulp-transform/master.svg?style=flat-square
-[Build link]: https://travis-ci.org/akim-mcmath/gulp-transform
-[Coverage badge]: https://img.shields.io/coveralls/akim-mcmath/gulp-transform/master.svg?style=flat-square&service=github
-[Coverage link]: https://coveralls.io/github/akim-mcmath/gulp-transform?branch=master
-[Dependencies badge]: https://img.shields.io/gemnasium/akim-mcmath/gulp-transform.svg?style=flat-square
-[Dependencies link]: https://gemnasium.com/akim-mcmath/gulp-transform
+[Build badge]: https://img.shields.io/travis/mcmath/gulp-transform/master.svg?style=flat-square
+[Build link]: https://travis-ci.org/mcmath/gulp-transform
+[Coverage badge]: https://img.shields.io/coveralls/mcmath/gulp-transform/master.svg?style=flat-square&service=github
+[Coverage link]: https://coveralls.io/github/mcmath/gulp-transform?branch=master
+[Dependencies badge]: https://img.shields.io/gemnasium/mcmath/gulp-transform.svg?style=flat-square
+[Dependencies link]: https://gemnasium.com/mcmath/gulp-transform
 [Cheerio link]: https://www.npmjs.com/package/cheerio
 [Vinyl link]: https://github.com/gulpjs/vinyl
 [Encoding link]: https://nodejs.org/docs/latest/api/buffer.html#buffer_buffers_and_character_encodings
