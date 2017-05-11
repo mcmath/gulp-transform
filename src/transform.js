@@ -1,4 +1,3 @@
-import {Promise} from 'es6-promise';
 import {isBuffer} from 'lodash';
 import {err} from './err';
 

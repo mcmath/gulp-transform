@@ -2,8 +2,6 @@ language: node_js
 node_js:
   - "6"
   - "4"
-  - "0.12"
-  - "0.10"
 after_success:
   - npm run coveralls
 before_deploy:
@@ -16,7 +14,7 @@ deploy:
     secure: ABRzp+20NrgciL4tdftlCINA9MHp2Ldd8R3k+v2ekILOR/n3Vomxd5qbmHhP/AiFWYEUZw1fU7zg6NNaxmtXRKvnLrpkA0aDeFBIphJ/wN/RSyR0hHO4VChf7bQYZnjpw8hJQy3Q3q41McKdTAc0MyoBELLcBh7bODgLzla1YqZRSb95XFJgK1g8umcKQ3HURkBLGSNimyXYqrukRAr7IIp7PYmovQzyEMNTmsSHJiE005/gHWv14ly+MGcRl27HlrDa0WWZMn5oRXUyiLgR7yhmmZOCK2VzC4nhm5J39j0vexY8YuxXyyd7NlUipcwIP9XiMeqX7t6w+DPCskYh4xq7iqV+jC2PRYaL+fKVXvJAJCDFgrSi3pJAtge7EFdcfqLZrdaekmHt9O9BLXKXd0QTEX+snaSW5nc1EwdoRHibUnybRIl5aZnrr88FK8EhtAvkJdhlqb1Ij98+/KHhEvlzgOJIMewykZv8Aa7QqDlBw9zAHJH4ZAxQfPa72lo9gIoc/1I18pUDHbXtzJL+dVEfk/zjrtGnZ7Ag1wJX6pGaNhndhTTIaFhAaDUojQAkeee5WmUTTgTHmjPjiCryXiKfbLhdXL3c3lXD4EnbBP5Gzv2Yu4YQMTVg1OcDi4zduussmN0uf+Ahm9dNIKkvrcTvAwPJ1tOqnbGH6SX75Zs=
   skip_cleanup: true
   on:
-    repo: akim-mcmath/gulp-transform
+    repo: mcmath/gulp-transform
     node: "4"
     tags: true
 after_deploy:
