@@ -34,9 +34,6 @@
     "url": "https://github.com/akim-mcmath/gulp-transform/issues"
   },
   "homepage": "https://github.com/akim-mcmath/gulp-transform#readme",
-  "peerDependencies": {
-    "gulp": "3.x"
-  },
   "dependencies": {
     "es6-promise": "^4.0.5",
     "gulp-util": "^3.0.7",
