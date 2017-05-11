@@ -15,7 +15,7 @@ deploy:
   skip_cleanup: true
   on:
     repo: mcmath/gulp-transform
-    node: "4"
+    node: "6"
     tags: true
 after_deploy:
   - npm run unbuild
