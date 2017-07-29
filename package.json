@@ -1,6 +1,6 @@
 {
   "name": "gulp-transform",
-  "version": "3.0.4",
+  "version": "3.0.5",
   "description": "A Gulp plugin for applying custom transformations to the contents of files",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
