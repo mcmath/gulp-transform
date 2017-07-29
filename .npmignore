@@ -1,8 +1,10 @@
 /coverage/
+/spec/
 /src/
-/test/
-/.babelrc
 /.editorconfig
-/.eslintrc.yml
 /.gitignore
 /.travis.yml
+/mocha.opts
+/tsconfig.build.json
+/tsconfig.json
+/tslint.json

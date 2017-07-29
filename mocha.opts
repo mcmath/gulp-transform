@@ -1,0 +1,3 @@
+src/**/*.ts
+spec/**/*.ts
+--compilers ts:ts-node/register

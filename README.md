@@ -1,130 +1,272 @@
 # gulp-transform
 
-[![Version][Version badge]][NPM link]
-[![Build][Build badge]][Build link]
-[![Coverage][Coverage badge]][Coverage link]
-[![Dependencies][Dependencies badge]][Dependencies link]
+[![version][versionBadge]][npm]
+[![build][buildBadge]][build]
+[![coverage][coverageBadge]][coverage]
+[![dependencies][dependenciesBadge]][dependencies]
 
-[Gulp][Gulp link] plugin for applying arbitrary transformations to
-the contents of files.
+A [Gulp][gulp] plugin for applying custom transformations to the contents of
+files.
 
 ## Install
 
-Install via [npm][NPM link]:
-
-```sh
-npm install --save-dev gulp-transform
-```
-
-## Examples
-
-#### Simple transformation
-
-Source file:
+Install via [npm][npm]:
 
 ```
-I am constant as the northern star.
+npm install --save-dev gulp gulp-transform
 ```
 
-Transform task:
+## Usage
+
+### Synchronous usage
+
+This example adds a timestamp to the beginning of each source file. The comment
+format is inferred from the file extension. Files with unrecognized extensions
+are not modified.
+
+#### gulpfile.js
 
 ```js
 const gulp = require('gulp');
 const transform = require('gulp-transform');
+const path = require('path');
 
-gulp.task('quadruple', function() {
-  return gulp.src('src/*.txt')
-    .pipe(transform(contents => Array(4).fill(contents).join('\n')))
-    .pipe(gulp.dest('dest'));
+const TIMESTAMP = Date();
+
+gulp.task('timestamp', () => {
+  return gulp.src('src/**/*')
+    .pipe(transform('utf8', timestamp))
+    .pipe('out');
 });
-```
 
-Destination file:
-
-```
-I am constant as the northern star.
-I am constant as the northern star.
-I am constant as the northern star.
-I am constant as the northern star.
-```
-
-#### Pairing with non-gulp packages
-
-We can pair gulp-transform with vanilla node packages to reduce our dependence
-on gulp-specific plugins. In this example, we use gulp-transform with
-[cheerio][Cheerio link] to add a `role="main"` attribute to all `<main>`
-elements, thus ensuring accessibility in older versions of Internet Explorer.
-
-```js
-const gulp = require('gulp');
-const transform = require('gulp-transform');
-const cheerio = require('cheerio');
-
-
-function transformFn(contents) {
-  var $ = cheerio.load(contents);
-  $('main').attr('role', 'main');
-  return $.html();
+function timestamp(content, file) {
+  switch (path.extname(file.path)) {
+    case '.js':
+    case '.ts':
+      return `// ${TIMESTAMP}\n\n${content}`;
+    case '.coffee':
+      return `# ${TIMESTAMP}\n\n${content}`;
+    default:
+      return content;
+  }
 }
+```
 
-gulp.task('cheerio', function() {
-  return gulp.src('src/**/*.html')
-    .pipe(transform(transformFn, {encoding: 'utf8'}))
-    .pipe(gulp.dest('dest'));
+#### src/hello.js
+
+```js
+console.log('Hello, world.');
+```
+
+#### out/hello.js
+
+```js
+// Thu Jul 27 2017 15:56:14 GMT-0700 (PDT)
+
+console.log('Hello, world.');
+```
+
+### Asynchronous usage
+
+This example uses [xml2js][xml2js] to convert XML to JSON. The callback
+returns a [Promise][promise] since the operation is asynchronous.
+
+#### gulpfile.js
+
+```js
+const gulp = require('gulp');
+const transform = require('gulp-transform');
+const rename = require('gulp-rename');
+const xml2js = require('xml2js');
+
+gulp.task('xml-to-json', () => {
+  return gulp.src('src/**/*.xml')
+    .pipe(transform('utf8', xmlToJson))
+    .pipe(rename({ extname: '.json' }))
+    .pipe('out');
 });
+
+function xmlToJson(content) {
+  return new Promise((resolve, reject) => {
+    xml2js.parseString(content, (error, data) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(JSON.stringify(data, null, 2));
+      }
+    });
+  });
+}
+```
+
+#### src/cities.xml
+
+```xml
+<cities>
+  <city>Amsterdam</city>
+  <city>Rotterdam</city>
+  <city>The Hague</city>
+</cities>
+```
+
+#### out/cities.json
+
+```json
+{
+  "cities": {
+    "city": [
+      "Amsterdam",
+      "Rotterdam",
+      "The Hague"
+    ]
+  }
+}
 ```
 
 ## API
 
-#### `transform(transformFn, [options])`
+### transform([options], callback)
 
-##### transformFn `function`
+Creates a stream that transforms the contents of [File][vinylFile] objects.
+Files in both streaming and buffer mode are accepted.
 
-The callback responsible for the transformation, whose return value will replace
-the file's contents. The return value may be a string, a Buffer, or a Promise
-resolvable to a string or Buffer. The callback is invoked once per file with the
-following arguments:
+To transform contents as a string, a [character encoding][encoding] must be
+specified; otherwise, contents will be passed to the callback as a
+[Buffer][nodeBuffer].
 
-* **contents** `Buffer` | `string` <br>
-The initial contents of the file. Contents are passed as a Buffer unless the
-`encoding` option is set, in which case they are passed as a string.
-Contents are normalized to ensure a consistent API regardless of whether
-files are in streaming or buffer mode.
+The contents of each File are replaced with the return value of the callback.
+Or, to perform an asynchronous transformation, a [Promise][promise] may be
+returned.
 
-* **file** `File` <br>
-The [Vinyl file][Vinyl link] object to which the contents belong. Useful for
-getting metadata about the file, such as its path. Making changes to
-`file.contents` is not recommended, however, as these contents are not
-normalized and will in any case be replaced by the return value of the callback.
+<table>
+  <thead>
+    <tr>
+      <th>Parameter</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td align="left">
+        <strong>[options]</strong>
+      </td>
+      <td align="center">
+        <p><code>object</code></p>
+        <p><code>string</code></p>
+        <p><code>null</code></p>
+      </td>
+      <td align="left">
+        <p>
+          An optional options object or a value indicating an encoding. If
+          passed as an object, the following properties are are accepted as
+          options:
+        </p>
+        <ul>
+          <li>
+            <strong>encoding</strong> - <code>string</code> | <code>null</code> - An
+            <a href="https://nodejs.org/dist/latest/docs/api/buffer.html#buffer_buffers_and_character_encodings">
+            encoding</a> supported by Node.js or <code>null</code> to indicate
+            no encoding. Defaults to <code>null</code>.
+          </li>
+          <li>
+            <strong>thisArg</strong> - <code>any</code> - The value of
+            <code>this</code> within <em>callback</em>. Defaults to
+            <code>undefined</code>.
+          </li>
+        </ul>
+        <p>
+          If passed as a string or <code>null</code>, it is interpreted as the
+          <em>encoding</em> option.
+        </p>
+        <p>
+          If no encoding is given, <em>callback</em> is called with a
+          <code>Buffer</code> object containing the contents of the file.
+          Otherwise, it is called with a string created with
+          <a href="https://nodejs.org/dist/latest/docs/api/buffer.html#buffer_buf_tostring_encoding_start_end">
+          <code><em>buffer</em>.toString(<em>encoding</em>)</code></a>.
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <td align="left">
+        <strong>callback</strong>
+      </td>
+      <td align="center">
+        <code>function</code>
+      </td>
+      <td align="left">
+        <p>
+          A function that transforms the contents of each file. It is invoked
+          with two arguments:
+        </p>
+        <ul>
+          <li>
+            <strong>contents</strong> - <code>Buffer</code> | <code>string</code> - The
+            contents of the file. If no encoding is given, <em>contents</em>
+            will be a <code>Buffer</code>; otherwise, it will be a string.
+          </li>
+          <li>
+            <strong>file</strong> - <code>File</code> - The
+            <a href="https://github.com/gulpjs/vinyl#instance-methods">
+            <code>File</code></a> object whose contents are being transformed.
+            Use this to access metadata about the file, e.g., its filename.
+          </li>
+        </ul>
+        <p>
+          The contents of the file are replaced with the return value of the
+          callback. For asynchronous transformations, a
+          <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise">
+          <code>Promise</code></a> may be returned. The return or completion
+          value must have the same type as <em>contents</em>.
+        </p>
+        <p>
+          The value of <code>this</code> within the callback may be set with the
+          <em>thisArg</em> option; otherwise, <code>this</code> will be
+          <code>undefined</code>.
+        </p>
+      </td>
+    </tr>
+  </tbody>
+</table>
 
-##### options `object` (optional)
+## TypeScript
 
-An object for configuring the behavior of the plugin. The following keys are
-accepted as options:
+Type declarations are included in the package.
 
-* **encoding** `string` <br>
-Casts contents to a string with the specified
-[encoding][Encoding link] before it is passed to transformFn. If no encoding is
-specified, contents will be passed as a Buffer.
+```
+npm i -D typescript ts-node gulp @types/gulp gulp-transform
+```
 
-* **thisArg** `*` <br>
-Determines the value of `this` within transformFn. If omitted,
-`this` will be undefined.
+#### gulpfile.ts
+
+```ts
+import gulp = require("gulp");
+import transform = require("gulp-transform");
+
+gulp.task("build", () => {
+  gulp.src("src/**/*")
+    .pipe(transform("utf8", () => { /* transform contents */ }))
+    .pipe("out");
+});
+```
 
 ## License
 
-Copyright &copy; 2016&ndash;2017 Akim McMath. Licensed under the [MIT License][License link].
+Copyright &copy; 2016&ndash;2017 Akim McMath. Licensed under the [MIT License][license].
 
-[Gulp link]: http://gulpjs.com/
-[NPM link]: https://npmjs.org/package/gulp-transform
-[Version badge]: https://img.shields.io/npm/v/gulp-transform.svg?style=flat-square
-[License link]: LICENSE
-[Build badge]: https://img.shields.io/travis/mcmath/gulp-transform/master.svg?style=flat-square
-[Build link]: https://travis-ci.org/mcmath/gulp-transform
-[Coverage badge]: https://img.shields.io/coveralls/mcmath/gulp-transform/master.svg?style=flat-square&service=github
-[Coverage link]: https://coveralls.io/github/mcmath/gulp-transform?branch=master
-[Dependencies badge]: https://img.shields.io/gemnasium/mcmath/gulp-transform.svg?style=flat-square
-[Dependencies link]: https://gemnasium.com/mcmath/gulp-transform
-[Cheerio link]: https://www.npmjs.com/package/cheerio
-[Vinyl link]: https://github.com/gulpjs/vinyl
-[Encoding link]: https://nodejs.org/docs/latest/api/buffer.html#buffer_buffers_and_character_encodings
+[gulp]: http://gulpjs.com/
+[npm]: https://npmjs.org/package/gulp-transform
+[versionBadge]: https://img.shields.io/npm/v/gulp-transform.svg?style=flat-square
+[license]: LICENSE
+[buildBadge]: https://img.shields.io/travis/mcmath/gulp-transform/master.svg?style=flat-square
+[build]: https://travis-ci.org/mcmath/gulp-transform
+[coverageBadge]: https://img.shields.io/coveralls/mcmath/gulp-transform/master.svg?style=flat-square&service=github
+[coverage]: https://coveralls.io/github/mcmath/gulp-transform?branch=master
+[dependenciesBadge]: https://img.shields.io/gemnasium/mcmath/gulp-transform.svg?style=flat-square
+[dependencies]: https://gemnasium.com/mcmath/gulp-transform
+[xml2js]: https://github.com/Leonidas-from-XIV/node-xml2js
+[vinylFile]: https://github.com/gulpjs/vinyl#instance-methods
+[encoding]: https://nodejs.org/dist/latest/docs/api/buffer.html#buffer_buffers_and_character_encodings
+[nodeBuffer]: https://nodejs.org/dist/latest-v8.x/docs/api/buffer.html
+[promise]: https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise
