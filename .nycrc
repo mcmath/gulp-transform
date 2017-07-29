@@ -1,0 +1,9 @@
+{
+  "extension": [
+    ".ts"
+  ],
+  "exclude": [
+    "**/*.d.ts",
+    "spec/**/*.ts"
+  ]
+}
