@@ -3,6 +3,8 @@ import { File } from "gulp-util";
 /**
  * Accepts the contents of a File object as a Buffer, applies a
  * transformation, and returns a Promise with the result.
+ *
+ * @internal
  */
 export interface TransformFunction {
     (contents: Buffer, file: File): Promise<Buffer>;
@@ -10,6 +12,8 @@ export interface TransformFunction {
 
 /**
  * A Vinyl File object in buffer mode.
+ *
+ * @internal
  */
 export interface BufferFile extends File {
     contents: Buffer;
@@ -17,6 +21,8 @@ export interface BufferFile extends File {
 
 /**
  * A Vinyl File object in streaming mode.
+ *
+ * @internal
  */
 export interface StreamFile extends File {
     contents: NodeJS.ReadableStream;
@@ -24,6 +30,8 @@ export interface StreamFile extends File {
 
 /**
  * A Node.js callback.
+ *
+ * @internal
  */
 export interface NodeCallback<T> {
     (error: null, value: T): void;
@@ -32,11 +40,15 @@ export interface NodeCallback<T> {
 
 /**
  * The name to display when a PluginError is thrown or emitted.
+ *
+ * @internal
  */
 export const PLUGIN_NAME = "gulp-transform";
 
 /**
  * Tests whether a value is a function.
+ *
+ * @internal
  */
 export function isFunction(value: any): value is Function {
     return typeof value === "function";
@@ -44,6 +56,8 @@ export function isFunction(value: any): value is Function {
 
 /**
  * Tests whether a value is either null or undefined.
+ *
+ * @internal
  */
 export function isNil(value: any): value is null | undefined {
     return value == null;
@@ -51,6 +65,8 @@ export function isNil(value: any): value is null | undefined {
 
 /**
  * Tests whether a value is an object that is not a function.
+ *
+ * @internal
  */
 export function isObjectLike(value: any): value is object {
     return typeof value === "object" && !!value;
@@ -58,6 +74,8 @@ export function isObjectLike(value: any): value is object {
 
 /**
  * Tests whether a value is a string primitive.
+ *
+ * @internal
  */
 export function isString(value: any): value is string {
     return typeof value === "string";

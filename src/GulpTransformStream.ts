@@ -5,6 +5,8 @@ import { PLUGIN_NAME, TransformFunction, BufferFile, StreamFile, NodeCallback } 
 
 /**
  * A stream of File objects returned by the plugin.
+ *
+ * @internal
  */
 export class GulpTransformStream extends Transform {
 
