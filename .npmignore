@@ -5,6 +5,7 @@
 /.gitignore
 /.travis.yml
 /mocha.opts
+/package-lock.json
 /tsconfig.build.json
 /tsconfig.json
 /tslint.json
