@@ -1,9 +1,10 @@
 language: node_js
 node_js:
+  - "8"
   - "6"
   - "4"
 after_success:
-  - npm run coveralls
+  - npm run coverage
 before_deploy:
   - npm run build
 deploy:
@@ -18,4 +19,4 @@ deploy:
     node: "6"
     tags: true
 after_deploy:
-  - npm run unbuild
+  - npm run clean
