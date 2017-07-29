@@ -6,12 +6,12 @@
   "types": "./lib/index.d.ts",
   "scripts": {
     "build": "npm run clean && tsc -p tsconfig.build.json",
-    "clean": "rimraf coverage lib",
+    "clean": "rimraf .nyc_output coverage lib",
     "test:lint": "tslint \"src/**/*.ts\" \"spec/**/*.ts\"",
-    "test:unit": "istanbul cover -e .ts -x \"spec/**/*.ts\" _mocha -- --opts mocha.opts",
+    "test:unit": "nyc _mocha --opts mocha.opts",
     "test": "npm run test:lint && npm run test:unit",
-    "report": "npm test && open coverage/lcov-report/index.html",
-    "coverage": "cat coverage/lcov.info | coveralls"
+    "report": "rimraf coverage && nyc --reporter=html _mocha --opts mocha.opts && open coverage/index.html",
+    "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "engines": {
     "node": ">=4"
@@ -50,9 +50,9 @@
     "chai": "^4.1.0",
     "chai-as-promised": "^7.1.1",
     "coveralls": "^2.13.1",
-    "istanbul": "1.1.0-alpha.1",
     "lodash": "^4.17.4",
     "mocha": "^3.4.2",
+    "nyc": "^11.1.0",
     "rimraf": "^2.6.1",
     "sinon": "^2.4.1",
     "sinon-chai": "^2.12.0",

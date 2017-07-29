@@ -1,8 +1,10 @@
+/.nyc_output/
 /coverage/
 /spec/
 /src/
 /.editorconfig
 /.gitignore
+/.nycrc
 /.travis.yml
 /mocha.opts
 /package-lock.json
