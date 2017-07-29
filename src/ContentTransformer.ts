@@ -5,6 +5,8 @@ import { PLUGIN_NAME, TransformFunction, isString } from "./common";
 /**
  * Creates a function for applying a user-defined transformation to
  * file contents.
+ *
+ * @internal
  */
 export class ContentTransformer {
 

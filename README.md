@@ -12,7 +12,7 @@ files.
 
 Install via [npm][npm]:
 
-```
+```sh
 npm install --save-dev gulp gulp-transform
 ```
 
@@ -232,9 +232,9 @@ returned.
 
 ## TypeScript
 
-Type declarations are included in the package.
+[TypeScript][typescript] declarations are included in the package.
 
-```
+```sh
 npm i -D typescript ts-node gulp @types/gulp gulp-transform
 ```
 
@@ -270,3 +270,4 @@ Copyright &copy; 2016&ndash;2017 Akim McMath. Licensed under the [MIT License][l
 [encoding]: https://nodejs.org/dist/latest/docs/api/buffer.html#buffer_buffers_and_character_encodings
 [nodeBuffer]: https://nodejs.org/dist/latest-v8.x/docs/api/buffer.html
 [promise]: https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise
+[typescript]: https://www.typescriptlang.org/

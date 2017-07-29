@@ -1,3 +1,4 @@
+import { File } from "gulp-util";
 import { Config } from "./Config";
 import { ContentTransformer } from "./ContentTransformer";
 import { GulpTransformStream } from "./GulpTransformStream";

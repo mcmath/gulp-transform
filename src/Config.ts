@@ -11,6 +11,8 @@ interface Options {
 /**
  * A normalized configuration object based on arguments passed to
  * the plugin.
+ *
+ * @internal
  */
 export class Config {
 

@@ -4,6 +4,8 @@ import { PLUGIN_NAME, NodeCallback, StreamFile, TransformFunction } from "./comm
 
 /**
  * The transformed contents of a File object in streaming mode.
+ *
+ * @internal
  */
 export class FileContentStream extends Transform {
 
