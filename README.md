@@ -36,7 +36,7 @@ const TIMESTAMP = Date();
 gulp.task('timestamp', () => {
   return gulp.src('src/**/*')
     .pipe(transform('utf8', timestamp))
-    .pipe('out');
+    .pipe(gulp.dest('out'));
 });
 
 function timestamp(content, file) {
@@ -83,7 +83,7 @@ gulp.task('xml-to-json', () => {
   return gulp.src('src/**/*.xml')
     .pipe(transform('utf8', xmlToJson))
     .pipe(rename({ extname: '.json' }))
-    .pipe('out');
+    .pipe(gulp.dest('out'));
 });
 
 function xmlToJson(content) {
@@ -247,7 +247,7 @@ import transform = require("gulp-transform");
 gulp.task("build", () => {
   gulp.src("src/**/*")
     .pipe(transform("utf8", () => { /* transform contents */ }))
-    .pipe("out");
+    .pipe(gulp.dest("out"));
 });
 ```
 
