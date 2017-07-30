@@ -138,10 +138,12 @@ The contents of each File are replaced with the return value of the callback.
 Or, to perform an asynchronous transformation, a [Promise][promise] may be
 returned.
 
+#### Parameters
+
 <table>
   <thead>
     <tr>
-      <th>Parameter</th>
+      <th>Name</th>
       <th>Type</th>
       <th>Description</th>
     </tr>
