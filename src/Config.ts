@@ -1,4 +1,4 @@
-import { PluginError } from "gulp-util";
+import PluginError = require("plugin-error");
 import { PLUGIN_NAME, isFunction, isNil, isObjectLike, isString } from "./common";
 
 type OptionsOrEncoding = Options | string | null | undefined;

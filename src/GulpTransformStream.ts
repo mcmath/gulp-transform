@@ -1,5 +1,6 @@
 import { Transform } from "stream";
-import { File, PluginError } from "gulp-util";
+import PluginError = require("plugin-error");
+import Vinyl = require("vinyl");
 import { FileContentStream } from "./FileContentStream";
 import { PLUGIN_NAME, TransformFunction, BufferFile, StreamFile, NodeCallback } from "./common";
 
@@ -14,7 +15,7 @@ export class GulpTransformStream extends Transform {
         private readonly transform: TransformFunction
     ) { super({ objectMode: true }); }
 
-    public _transform(file: File, _encoding: string, next: NodeCallback<File>): void {
+    public _transform(file: Vinyl, _encoding: string, next: NodeCallback<Vinyl>): void {
         if (file.isBuffer())
             return void this.transformBufferFile(file, next);
 

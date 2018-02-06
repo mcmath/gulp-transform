@@ -1,4 +1,4 @@
-import { File } from "gulp-util";
+import Vinyl = require("vinyl");
 
 /**
  * Accepts the contents of a File object as a Buffer, applies a
@@ -7,7 +7,7 @@ import { File } from "gulp-util";
  * @internal
  */
 export interface TransformFunction {
-    (contents: Buffer, file: File): Promise<Buffer>;
+    (contents: Buffer, file: Vinyl): Promise<Buffer>;
 }
 
 /**
@@ -15,7 +15,7 @@ export interface TransformFunction {
  *
  * @internal
  */
-export interface BufferFile extends File {
+export interface BufferFile extends Vinyl {
     contents: Buffer;
 }
 
@@ -24,7 +24,7 @@ export interface BufferFile extends File {
  *
  * @internal
  */
-export interface StreamFile extends File {
+export interface StreamFile extends Vinyl {
     contents: NodeJS.ReadableStream;
 }
 

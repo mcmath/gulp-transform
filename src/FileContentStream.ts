@@ -1,5 +1,5 @@
 import { Transform } from "stream";
-import { PluginError } from "gulp-util";
+import PluginError = require("plugin-error");
 import { PLUGIN_NAME, NodeCallback, StreamFile, TransformFunction } from "./common";
 
 /**

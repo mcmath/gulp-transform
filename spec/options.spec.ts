@@ -1,5 +1,6 @@
 import { expect } from "chai";
-import { File, PluginError } from "gulp-util";
+import PluginError = require("plugin-error");
+import Vinyl = require("vinyl");
 import { identity } from "lodash";
 import { SinonSpy, spy } from "sinon";
 import { createBufferFile, toBuffer, write } from "./helpers";
@@ -8,7 +9,7 @@ import transform = require("../src");
 describe("options", () => {
 
     describe("encoding", () => {
-        let file: File;
+        let file: Vinyl;
         let callback: SinonSpy;
 
         beforeEach(() => {
@@ -86,7 +87,7 @@ describe("options", () => {
     });
 
     describe("thisArg", () => {
-        let file: File;
+        let file: Vinyl;
         let callback: SinonSpy;
         let thisArg: object;
 

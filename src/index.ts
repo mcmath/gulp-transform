@@ -1,4 +1,4 @@
-import { File } from "gulp-util";
+import Vinyl = require("vinyl");
 import { Config } from "./Config";
 import { ContentTransformer } from "./ContentTransformer";
 import { GulpTransformStream } from "./GulpTransformStream";
@@ -16,7 +16,7 @@ import { GulpTransformStream } from "./GulpTransformStream";
  */
 function gulpTransform(
     encoding: gulpTransform.Encoding,
-    callback: (contents: string, file: File) => string | PromiseLike<string>
+    callback: (contents: string, file: Vinyl) => string | PromiseLike<string>
 ): NodeJS.ReadWriteStream;
 
 /**
@@ -32,7 +32,7 @@ function gulpTransform(
  */
 function gulpTransform(
     encoding: null,
-    callback: (contents: Buffer, file: File) => Buffer | PromiseLike<Buffer>
+    callback: (contents: Buffer, file: Vinyl) => Buffer | PromiseLike<Buffer>
 ): NodeJS.ReadWriteStream;
 
 /**
@@ -52,7 +52,7 @@ function gulpTransform(
  */
 function gulpTransform(
     options: { encoding: gulpTransform.Encoding, thisArg?: any },
-    callback: (contents: string, file: File) => string | PromiseLike<string>
+    callback: (contents: string, file: Vinyl) => string | PromiseLike<string>
 ): NodeJS.ReadWriteStream;
 
 /**
@@ -72,7 +72,7 @@ function gulpTransform(
  */
 function gulpTransform(
     options: { encoding?: null, thisArg?: any },
-    callback: (contents: Buffer, file: File) => Buffer | PromiseLike<Buffer>
+    callback: (contents: Buffer, file: Vinyl) => Buffer | PromiseLike<Buffer>
 ): NodeJS.ReadWriteStream;
 
 /**
@@ -85,7 +85,7 @@ function gulpTransform(
  * @return           Returns a Gulp plugin stream.
  */
 function gulpTransform(
-    callback: (contents: Buffer, file: File) => Buffer | PromiseLike<Buffer>
+    callback: (contents: Buffer, file: Vinyl) => Buffer | PromiseLike<Buffer>
 ): NodeJS.ReadWriteStream;
 
 function gulpTransform(arg0: any, arg1?: any): NodeJS.ReadWriteStream {

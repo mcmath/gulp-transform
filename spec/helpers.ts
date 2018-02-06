@@ -1,24 +1,24 @@
-import { File } from "gulp-util";
+import Vinyl = require("vinyl");
 import { Readable, Transform } from "stream";
 
 /**
  * A Vinyl File in buffer mode.
  */
-export interface BufferFile extends File {
+export interface BufferFile extends Vinyl {
     contents: Buffer;
 }
 
 /**
  * A Vinyl File in streaming mode.
  */
-export interface StreamFile extends File {
+export interface StreamFile extends Vinyl {
     contents: NodeJS.ReadableStream;
 }
 
 /**
  * A Vinyl File whose contents are null.
  */
-export interface NullFile extends File {
+export interface NullFile extends Vinyl {
     contents: null;
 }
 
@@ -35,7 +35,7 @@ export function createBufferFile(content: string, encoding: string): BufferFile;
 export function createBufferFile(content: number[], encoding?: null): BufferFile;
 export function createBufferFile(content: Buffer, encoding?: null): BufferFile;
 export function createBufferFile(content: string | number[] | Buffer, encoding?: string | null): BufferFile {
-    return new File({
+    return new Vinyl({
         cwd: "/root/src",
         path: "/root/src/name.txt",
         contents: toBuffer(content as any, encoding as any)
@@ -55,7 +55,7 @@ export function createStreamFile(content: string, encoding: string): StreamFile;
 export function createStreamFile(content: number[], encoding?: null): StreamFile;
 export function createStreamFile(content: Buffer, encoding?: null): StreamFile;
 export function createStreamFile(content: string | number[] | Buffer, encoding?: string | null): StreamFile {
-    return new File({
+    return new Vinyl({
         cwd: "/root/src",
         path: "/root/src/name.txt",
         contents: new Readable({
@@ -71,7 +71,7 @@ export function createStreamFile(content: string | number[] | Buffer, encoding?:
  * Creates a Vinyl File object whose contents are null.
  */
 export function createNullFile(): NullFile {
-    return new File({
+    return new Vinyl({
         cwd: "/root/src",
         path: "/root/src/name.txt",
         contents: null
@@ -121,7 +121,7 @@ export async function read(stream: NodeJS.ReadableStream): Promise<File> {
  * @param  stream  The object-mode stream to write to.
  * @return         Returns a promise that resolve to the stream itself.
  */
-export async function write<T extends NodeJS.WritableStream>(file: File, stream: T): Promise<T> {
+export async function write<T extends NodeJS.WritableStream>(file: Vinyl, stream: T): Promise<T> {
     stream.write(file as any);
     stream.end();
 
@@ -140,9 +140,9 @@ export async function write<T extends NodeJS.WritableStream>(file: File, stream:
  *                   Defaults to null.
  * @return           Returns a promise with the contents of the file.
  */
-export async function readFile(file: File, encoding: string): Promise<string>;
-export async function readFile(file: File, encoding?: null): Promise<Buffer>;
-export async function readFile(file: File, encoding?: string | null): Promise<string | Buffer> {
+export async function readFile(file: Vinyl, encoding: string): Promise<string>;
+export async function readFile(file: Vinyl, encoding?: null): Promise<Buffer>;
+export async function readFile(file: Vinyl, encoding?: string | null): Promise<string | Buffer> {
     if (file.isBuffer())
         return encoding ? file.contents.toString(encoding) : file.contents;
     if (!file.isStream())

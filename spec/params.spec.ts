@@ -1,5 +1,6 @@
 import { expect } from "chai";
-import { File, PluginError } from "gulp-util";
+import PluginError = require("plugin-error");
+import Vinyl = require("vinyl");
 import { identity } from "lodash";
 import { createBufferFile, write } from "./helpers";
 import transform = require("../src");
@@ -7,7 +8,7 @@ import transform = require("../src");
 describe("parameters", () => {
 
     describe("callback", () => {
-        let file: File;
+        let file: Vinyl;
 
         beforeEach(() => {
             file = createBufferFile([0xCF, 0x80]);
