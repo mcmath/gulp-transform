@@ -45,7 +45,6 @@
     "@types/lodash": "^4.14.71",
     "@types/mocha": "^2.2.41",
     "@types/node": "*",
-    "@types/plugin-error": "^0.1.0",
     "@types/sinon": "^2.3.3",
     "@types/sinon-chai": "^2.7.28",
     "@types/vinyl": "^2.0.2",
