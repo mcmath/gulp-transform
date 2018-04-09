@@ -1,5 +1,6 @@
 import { expect } from "chai";
-import { File, PluginError } from "gulp-util";
+import PluginError = require("plugin-error");
+import Vinyl = require("vinyl");
 import { identity, noop } from "lodash";
 import { createBufferFile, createStreamFile, createNullFile, toBuffer, write, read, readFile } from "./helpers";
 import transform = require("../src");
@@ -7,8 +8,8 @@ import transform = require("../src");
 describe("content mode", () => {
 
     describe("buffer", () => {
-        let file1: File;
-        let file2: File;
+        let file1: Vinyl;
+        let file2: Vinyl;
 
         beforeEach(() => {
             file1 = createBufferFile([0xCF, 0x80]);
@@ -38,8 +39,8 @@ describe("content mode", () => {
     });
 
     describe("stream", () => {
-        let file1: File;
-        let file2: File;
+        let file1: Vinyl;
+        let file2: Vinyl;
 
         beforeEach(() => {
             file1 = createStreamFile([0xCF, 0x80]);

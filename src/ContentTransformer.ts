@@ -1,4 +1,5 @@
-import { File, PluginError } from "gulp-util";
+import PluginError = require("plugin-error");
+import Vinyl = require("vinyl");
 import { Config } from "./Config";
 import { PLUGIN_NAME, TransformFunction, isString } from "./common";
 
@@ -26,7 +27,7 @@ export class ContentTransformer {
         return (contents, file) => this.transform(contents, file);
     }
 
-    private async transform(contents: Buffer, file: File): Promise<Buffer> {
+    private async transform(contents: Buffer, file: Vinyl): Promise<Buffer> {
         const decodedContents = this.decodeContents(contents);
         const callbackResult = await this.invokeAndValidate(decodedContents, file);
 
@@ -40,7 +41,7 @@ export class ContentTransformer {
         return contents;
     }
 
-    private async invokeAndValidate(decodedContents: Buffer | string, file: File): Promise<Buffer | string> {
+    private async invokeAndValidate(decodedContents: Buffer | string, file: Vinyl): Promise<Buffer | string> {
         const callbackResult = await this.tryInvokeCallback(decodedContents, file);
 
         if (this.encoding && !isString(callbackResult))
@@ -52,7 +53,7 @@ export class ContentTransformer {
         return callbackResult;
     }
 
-    private async tryInvokeCallback(decodedContents: Buffer | string, file: File): Promise<Buffer | string> {
+    private async tryInvokeCallback(decodedContents: Buffer | string, file: Vinyl): Promise<Buffer | string> {
         try {
             return await this.callback.call(this.thisArg, decodedContents, file);
         } catch (error) {
